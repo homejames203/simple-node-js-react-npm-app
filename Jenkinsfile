@@ -9,6 +9,12 @@ pipeline {
         CI = 'true'
     }
     stages {
+        stage('YaddaYadda') { 
+            steps {
+                def props = readJSON file: 'package.json'
+                echo props
+            }
+        }
         stage('Build') { 
             steps {
                 sh 'npm install' 
