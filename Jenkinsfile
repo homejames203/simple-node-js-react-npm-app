@@ -12,7 +12,11 @@ pipeline {
         stage('YaddaYadda') { 
             def packageJSON = readJSON file: 'package.json'
             def packageJSONVersion = packageJSON.version
-            echo packageJSONVersion
+            steps {
+                echo packageJSONVersion
+            }
+            
+            
         }
         stage('Build') { 
             steps {
