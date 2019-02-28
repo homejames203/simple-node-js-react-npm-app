@@ -10,11 +10,9 @@ pipeline {
     }
     stages {
         stage('YaddaYadda') { 
-            def props = readJSON file: 'package.json'
-            steps {
-                
-                echo props
-            }
+            def packageJSON = readJSON file: 'package.json'
+            def packageJSONVersion = packageJSON.version
+            echo packageJSONVersion
         }
         stage('Build') { 
             steps {
