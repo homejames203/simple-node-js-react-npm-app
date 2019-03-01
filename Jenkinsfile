@@ -12,7 +12,7 @@ pipeline {
     }
     stages {
         stage('Upload Release') { 
-            when { tag pattern: "release-\\d+", comparator: "REGEXP"}
+            when { tag "release-*" }
             steps {
                 script {
                     echo "IS RELEASE"
@@ -27,16 +27,18 @@ pipeline {
                     echo "Uploading minor to ${releaseLocation}/${minor}"
                     def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
                     echo "Uploading patch to ${releaseLocation}/${patch}"
-                    echo "Branch Names: ${env.BRANCH_NAME}"                 
+                    echo "Branch Names: ${env.BRANCH_NAME}"    
+                    echo "ENV VARIABLES ${env}"             
                 }
             }
         }
         stage('Upload Branch') { 
-            when { not { tag pattern: "release-\\d+", comparator: "REGEXP"} }
+            when { not { tag "release-*" } }
             steps {
                 script {
                     echo "IS JUST BRANCH"
                     echo "Branch Name: ${env.BRANCH_NAME}" 
+                    echo "ENV VARIABLES ${env}"   
                 }
             }
         }
