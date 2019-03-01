@@ -23,19 +23,20 @@ pipeline {
                     def minor = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.x"
                     def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
                     echo "${major}, ${minor}, ${patch}"
+                    echo env.BRANCH_NAME
                     
                 }
             }
         }
-        stage('Build') { 
-            steps {
-                sh 'npm install' 
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './jenkins/scripts/test.sh'
-            }
-        }
+        // stage('Build') { 
+        //     steps {
+        //         sh 'npm install' 
+        //     }
+        // }
+        // stage('Test') {
+        //     steps {
+        //         sh './jenkins/scripts/test.sh'
+        //     }
+        // }
     }
 }
