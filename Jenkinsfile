@@ -9,8 +9,7 @@ pipeline {
     }
     environment {
         CI = 'true'
-        ROOT_BUCKET_LOCATION = 's3://kinops.io/bundles/'
-        BUNDLE_NAME = sh(returnStdout: true, script: 'echo `expr "$GIT_URL" : \'^.*/request-ce-bundle-\\(.*\\)\\.git$\'`').trim()
+        ROOT_BUCKET_LOCATION = 's3://kinops.io/bundles'
     }
     stages {
         stage('Upload to S3') {
