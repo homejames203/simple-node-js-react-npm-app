@@ -1,5 +1,3 @@
-@Library('jenkins-shared-scripts') _
-
 pipeline {
     agent {
         docker {
@@ -14,6 +12,7 @@ pipeline {
         stage('YaddaYadda') { 
             steps {
                 script {
+                    @Library('jenkins-shared-scripts')
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
                     def version = new SemVer(packageJSONVersion)
