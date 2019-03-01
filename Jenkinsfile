@@ -27,6 +27,7 @@ pipeline {
                     
                 }
                 echo env
+                echo minor
             }
         }
         // stage('Build') { 
