@@ -16,8 +16,9 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 script {
-                    def bundleName = sh(returnStdout: true, script: 'echo `expr "$GIT_URL" : \'^.*/request-ce-bundle-\\(.*\\)\\.git$\'`').trim()
-                    if(env.TAG_NAME && env.TAG_NAME.startsWith("release-")) {
+                    //def bundleName = sh(returnStdout: true, script: 'echo `expr "$GIT_URL" : \'^.*/request-ce-bundle-\\(.*\\)\\.git$\'`').trim()
+                    def bundleName = "kinetic"
+                    if(env.TAG_NAME) {
                         echo "IS RELEASE"
                         def releasesBucketLocation = "${bundleName}/releases"
                         def packageJSON = readJSON file: 'package.json'
@@ -30,12 +31,14 @@ pipeline {
                             def uploadLocation = "${env.ROOT_BUCKET_LOCATION}/${releasesBucketLocation}/${release}"
                             echo "Uploading Release (${release}) to S3 ${uploadLocation}"
                         }
+                    } else {
+                        def branchesBucketLocation = "${bundleName}/branches"
+                        def uploadLocation = "${env.ROOT_BUCKET_LOCATION}/${branchesBucketLocation}/${env.BRANCH_NAME}"
+                        echo "Uploading Branch (${env.BRANCH_NAME}) to S3 ${uploadLocation}"
+                        // OPTIONS = '--acl public-read --cache-control="must-revalidate, max-age: 0" --delete'
+                        // sh "aws s3 sync packages/app/build s3://kinops.io/bundles/hydrogen/${BUNDLE}/${VERSION} ${OPTIONS}"
                     }
-                    def branchesBucketLocation = "${bundleName}/branches"
-                    def uploadLocation = "${env.ROOT_BUCKET_LOCATION}/${branchesBucketLocation}/${env.BRANCH_NAME}"
-                    echo "Uploading Branch (${env.BRANCH_NAME}) to S3 ${uploadLocation}"
-                    // OPTIONS = '--acl public-read --cache-control="must-revalidate, max-age: 0" --delete'
-                    // sh "aws s3 sync packages/app/build s3://kinops.io/bundles/hydrogen/${BUNDLE}/${VERSION} ${OPTIONS}"
+                    
                 }
             }  
         }
