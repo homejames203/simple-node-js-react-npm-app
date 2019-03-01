@@ -27,7 +27,7 @@ pipeline {
                     echo "Uploading minor to ${releaseLocation}/${minor}"
                     def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
                     echo "Uploading patch to ${releaseLocation}/${patch}"
-                    echo "Branch Name: ${env.BRANCH_NAME}"                 
+                    echo "Branch Names: ${env.BRANCH_NAME}"                 
                 }
             }
         }
