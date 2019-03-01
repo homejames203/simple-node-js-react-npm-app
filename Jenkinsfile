@@ -17,9 +17,12 @@ pipeline {
                     
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
-                    def version = new SemVer(packageJSONVersion)
-                    echo version.major.toString()
-                    echo version.toString()
+                    def semVerVersion = new SemVer(packageJSONVersion)
+                    // Upload to S3
+                    def major = "${semVerVersion.major.toString()}.x.x"
+                    def minor = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.x"
+                    def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
+                    echo "${major}, ${minor}, ${patch}"
                     
                 }
             }
