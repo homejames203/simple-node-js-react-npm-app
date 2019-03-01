@@ -18,7 +18,7 @@ pipeline {
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
                     def version = new SemVer(packageJSONVersion)
-                    echo version.major
+                    echo version.major.toString()
                     echo version.toString()
                     
                 }
