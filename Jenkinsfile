@@ -1,3 +1,5 @@
+@Library('jenkins-shared-scripts') _
+
 pipeline {
     agent {
         docker {
@@ -14,7 +16,9 @@ pipeline {
                 script {
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
-                    echo packageJSONVersion
+                    def version = new SemVer(packageJSONVersion)
+                    echo version.toString()
+                    
                 }
             }
         }
