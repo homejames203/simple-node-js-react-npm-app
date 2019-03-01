@@ -1,3 +1,5 @@
+@Library('jenkins-shared-scripts')_
+import com.kineticdata.*
 pipeline {
     agent {
         docker {
@@ -12,10 +14,10 @@ pipeline {
         stage('YaddaYadda') { 
             steps {
                 script {
-                    @Library('jenkins-shared-scripts')
+                    
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
-                    def version = new SemVer(packageJSONVersion)
+                    def version = new SemVer('9.9.9')
                     echo version.toString()
                     
                 }
