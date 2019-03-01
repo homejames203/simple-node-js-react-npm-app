@@ -16,9 +16,10 @@ pipeline {
         stage('Upload to S3') {
             steps {
                 script {
+                    def bundleName = sh(returnStdout: true, script: 'echo `expr "$GIT_URL" : \'^.*/request-ce-bundle-\\(.*\\)\\.git$\'`').trim()
                     if(env.TAG_NAME && env.TAG_NAME.startsWith("release-")) {
                         echo "IS RELEASE"
-                        def releasesBucketLocation = "${env.BUNDLE_NAME}/releases"
+                        def releasesBucketLocation = "${bundleName}/releases"
                         def packageJSON = readJSON file: 'package.json'
                         def packageJSONVersion = packageJSON.version
                         def semVerVersion = new SemVer(packageJSONVersion)
@@ -30,7 +31,7 @@ pipeline {
                             echo "Uploading Release (${release}) to S3 ${uploadLocation}"
                         }
                     }
-                    def branchesBucketLocation = "${env.BUNDLE_NAME}/branches"
+                    def branchesBucketLocation = "${bundleName}/branches"
                     def uploadLocation = "${env.ROOT_BUCKET_LOCATION}/${branchesBucketLocation}/${env.BRANCH_NAME}"
                     echo "Uploading Branch (${env.BRANCH_NAME}) to S3 ${uploadLocation}"
                     // OPTIONS = '--acl public-read --cache-control="must-revalidate, max-age: 0" --delete'
