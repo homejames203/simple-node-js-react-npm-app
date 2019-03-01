@@ -26,6 +26,7 @@ pipeline {
                     echo env.BRANCH_NAME
                     
                 }
+                echo env
             }
         }
         // stage('Build') { 
