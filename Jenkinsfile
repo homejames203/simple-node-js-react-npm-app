@@ -11,23 +11,33 @@ pipeline {
         CI = 'true'
     }
     stages {
-        stage('YaddaYadda') { 
+        stage('Upload Release') { 
+            when { tag }
             steps {
                 script {
-                    
+                    echo "IS RELEASE"
+                    def releaseLocation = '/releases'
                     def packageJSON = readJSON file: 'package.json'
                     def packageJSONVersion = packageJSON.version
                     def semVerVersion = new SemVer(packageJSONVersion)
                     // Upload to S3
                     def major = "${semVerVersion.major.toString()}.x.x"
+                    echo "Uploading major to ${releaseLocation}/${major}"
                     def minor = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.x"
+                    echo "Uploading minor to ${releaseLocation}/${minor}"
                     def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
-                    echo "${major}, ${minor}, ${patch}"
-                    echo env.BRANCH_NAME
-                    
+                    echo "Uploading patch to ${releaseLocation}/${patch}"
+                    echo "Branch Name: ${env.BRANCH_NAME}"                 
                 }
-                echo env
-                echo minor
+            }
+        }
+        stage('Upload Branch') { 
+            when { not { tag }  }
+            steps {
+                script {
+                    echo "IS JUST BRANCH"
+                    echo "Branch Name: ${env.BRANCH_NAME}" 
+                }
             }
         }
         // stage('Build') { 
