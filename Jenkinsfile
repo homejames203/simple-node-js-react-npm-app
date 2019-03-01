@@ -12,7 +12,9 @@ pipeline {
     }
     stages {
         stage('Print Variables') {
-            echo sh(returnStdout: true, script: 'env')
+            steps {
+                echo sh(returnStdout: true, script: 'env')  
+            }  
         }
         stage('Upload Release') { 
             when { tag "release-*" }
