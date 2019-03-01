@@ -12,7 +12,7 @@ pipeline {
     }
     stages {
         stage('Upload Release') { 
-            when { tag }
+            when { tag pattern: "release-\\d+", comparator: "REGEXP"}
             steps {
                 script {
                     echo "IS RELEASE"
@@ -32,7 +32,7 @@ pipeline {
             }
         }
         stage('Upload Branch') { 
-            when { not { tag }  }
+            when { not { tag pattern: "release-\\d+", comparator: "REGEXP"} }
             steps {
                 script {
                     echo "IS JUST BRANCH"
