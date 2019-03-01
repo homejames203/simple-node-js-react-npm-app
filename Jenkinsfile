@@ -15,9 +15,9 @@ pipeline {
     stages {
         stage('Upload to S3') {
             steps {
-                if(env.TAG_NAME && env.TAG_NAME.startsWith("release-")) {
-                    echo "IS RELEASE"
-                    script {
+                script {
+                    if(env.TAG_NAME && env.TAG_NAME.startsWith("release-")) {
+                        echo "IS RELEASE"
                         def releasesBucketLocation = "${env.BUNDLE_NAME}/releases"
                         def packageJSON = readJSON file: 'package.json'
                         def packageJSONVersion = packageJSON.version
@@ -30,8 +30,6 @@ pipeline {
                             echo "Uploading Release (${release}) to S3 ${uploadLocation}"
                         }
                     }
-                }
-                script {
                     def branchesBucketLocation = "${env.BUNDLE_NAME}/branches"
                     def uploadLocation = "${env.ROOT_BUCKET_LOCATION}/${branchesBucketLocation}/${env.BRANCH_NAME}"
                     echo "Uploading Branch (${env.BRANCH_NAME}) to S3 ${uploadLocation}"
