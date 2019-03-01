@@ -11,6 +11,9 @@ pipeline {
         CI = 'true'
     }
     stages {
+        stage('Print Variables') {
+            echo sh(returnStdout: true, script: 'env')
+        }
         stage('Upload Release') { 
             when { tag "release-*" }
             steps {
@@ -26,9 +29,7 @@ pipeline {
                     def minor = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.x"
                     echo "Uploading minor to ${releaseLocation}/${minor}"
                     def patch = "${semVerVersion.major.toString()}.${semVerVersion.minor.toString()}.${semVerVersion.patch.toString()}"
-                    echo "Uploading patch to ${releaseLocation}/${patch}"
-                    echo "Branch Names: ${env.BRANCH_NAME}"    
-                    echo "ENV VARIABLES ${env.toString()}"             
+                    echo "Uploading patch to ${releaseLocation}/${patch}"       
                 }
             }
         }
@@ -38,7 +39,6 @@ pipeline {
                 script {
                     echo "IS JUST BRANCH"
                     echo "Branch Name: ${env.BRANCH_NAME}" 
-                    echo "ENV VARIABLES ${env.toString()}"   
                 }
             }
         }
