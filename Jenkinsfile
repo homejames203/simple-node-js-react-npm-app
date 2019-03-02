@@ -17,7 +17,7 @@ pipeline {
                 script {
                     def bundleName = env.GIT_URL.startsWith("request-ce-bundle") ? 
                         sh(returnStdout: true, script: 'echo `expr "$GIT_URL" : \'^.*/request-ce-bundle-\\(.*\\)\\.git$\'`').trim() : 
-                        sh(returnStdout: true, script: 'echo $(basename "$GIT_URL" ".${url##*.}")').trim()
+                        sh(returnStdout: true, script: 'echo $(basename $GIT_URL .git)').trim()
                     if(env.TAG_NAME) {
                         echo "IS RELEASE"
                         def releasesBucketLocation = "${bundleName}/releases"
